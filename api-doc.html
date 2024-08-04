@@ -1,0 +1,86 @@
+<html>
+    <head>
+    <title>:: API Documentation ::</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>  
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+        </script>
+        <link href="favicon.ico" rel="icon" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    </head>
+    <body>
+
+        <div class="container">
+            <h1>API Documentation</h1>
+            <div>
+                <h2>Per Page</h2>
+                <p>Request URL pattern : https://quran.rf.gd/per-page.php?params=values</p>
+                <p>Request type: GET</p>
+                <table class="table table-responsive table-stripped">
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Description</th>
+                        <th>Data Type</th>
+                        <th>Required</th>
+                        <th>Example</th>
+                    </tr>
+                    <tr>
+                        <td>page</td>
+                        <td>Number 1 through 604. Default if not set is 604</td>
+                        <td>numeric</td>
+                        <td>optional</td>
+                        <td>https://quran.rf.gd/per-page.php?page=1</td>
+                    </tr>
+                    <tr>
+                        <td>font_size</td>
+                        <td>Default if not set is 30</td>
+                        <td>numeric</td>
+                        <td>optional</td>
+                        <td>https://quran.rf.gd/per-page.php?font_size=30</td>
+                    </tr>
+                </table> 
+                <p>Response format : json</p> 
+                <h4>Example</h4>
+                <div>
+                    <pre style="font-family: monospace">{
+    "ayahs": [
+        {
+            "surah_name": "ﮌﰝ",
+            "words": "ﱁ ﱂ ﱃ ﱄ ﱅ ﱆ ﱇ ﱈ ﱉ ﱊ ﱋ ﱌ ﱍ ﱎ ﱏ ﱐ ﱑ ﱒ ﱓ"
+        },
+        {
+            "surah_name": "ﮌﰞ",
+            "words": "ﱔ ﱕ ﱖ ﱗ ﱘ ﱙ ﱚ ﱛ ﱜ ﱝ ﱞ ﱟ ﱠ ﱡ ﱢ ﱣ ﱤ ﱥ ﱦ ﱧ ﱨ ﱩ ﱪ ﱫ ﱬ ﱭ ﱮ ﱯ"
+        },
+        {
+            "words": "ﱰ ﱱ ﱲ ﱳ ﱴ ﱵ ﱶ ﱷ ﱸ ﱹ ﱺ ﱻ ﱼ ﱽ ﱾ ﱿ ﲀ ﲁ ﲂ ﲃ ﲄ ﲅ ﲆ ﲇ ﲈ ﲉ",
+            "surah_name": "ﮌﰟ"
+        }
+    ],
+    "page": 604,
+    "pageAr": "٦٠٤",
+    "font_size": 30,
+    "font_ayah": "https:\/\/en.muqri.com\/mushaf\/woff2\/QCF2604.woff2",
+    "font_surah": "http:\/\/quran.rf.gd\/assets\/fonts\/suwar.woff2",
+    "font_basmalah": "http:\/\/quran.rf.gd\/assets\/fonts\/5BISMILU.woff2"
+}</pre>
+                </div>
+
+                <h2>Per Ayah</h2>
+                <p>Request URL pattern : https://quran.rf.gd/per-ayah.php?params=values</p>
+                <p>Request parameters : surah, ayah, font_size.</p>
+                <p>Request values format : Numeric, surah (1-114)</p>
+                <p>Request type: GET</p>
+                <p>Response format : json</p>
+                <p>Example : https://quran.rf.gd/per-ayah.php?surah=1&ayah=1&font_size=30</p>
+            </div>
+
+        </div>
+        <hr/>
+        <div class="footer text-center" style="margin-bottom:50px;">&copy; 2019 - Jerry Maheswara</div>
+        <div class="footer text-center" style="margin-bottom:50px;"><a href="/">Back</a></div>
+
+    <!--
+    </body>
+</html>

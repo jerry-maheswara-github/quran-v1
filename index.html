@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/> 
+        <title>Quranku
+        </title>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+        </script>
+        <link href="favicon.ico" rel="icon" type="image/x-icon"/>
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <style id='st'>
+            .ayah_p{font-family:Ayah;user-select:none-;direction:rtl;font-size:22pt;text-align:justify;text-align-last:center;padding:0 .5rem; letter-spacing:-2.5px;color:#000;display:block;line-height:1.8;}
+            @font-face{font-family:Basmalah;src:local(Basmalah),url(assets/fonts/QCF2BSML.woff2) format("woff2"),url(assets/fonts/QCF2BSML.woff) format("woff")} @font-face{font-family:Suwar;src:url(assets/fonts/suwar.woff2) format("woff2"),url(assets/fonts/suwar.woff) format("woff");font-display:block;unicode-range:U+fb8c-fbb1,U+fbd3-fc1f} .surah_name{text-align:center;font-family:Suwar; line-height:.8;} .basmalah {text-align:center;font-family:Basmalah;}  @media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) { .ayah_p{ font-size : 20pt!important;}} </style>
+    </head>
+    <body>
+        <div class="container-fluid" style="margin-top: 10px; direction: rtl;">
+            <div class="" id="main" ></div>
+        </div>
+        <div class="clearfix row" id="nav" style="text-align: center;direction: rtl; margin: 30px auto;">
+            <div class="col-xs-4">
+                <div class="row">
+                    <button class="btn btn-success btn-lg btn-block next" style="height: 200px">&gt;</button>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="row text-center">
+                    <select id="current" type="number" style="text-align: center; text-align-last: center; width: 96%;padding-left: 10px; border-radius: 4px; border: 1px solid #000; font-size: 16pt; direction: ltr!important; height: 200px;" ></select> 
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="row">
+                    <button class="btn btn-success btn-lg btn-block prev" style="height: 200px">&lt;</button>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="footer text-center" style="margin:50px 0;">&copy; 2019 - Jerry Maheswara</div>
+        <div class="footer text-center" style="margin:50px 0;">
+            <div><a href="a.html" class="btn">Per Ayah</a></div>
+            <div><a href="api-doc.html" class="btn">API Documentation</a></div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#current').html('');
+                for (var i = 1; i <= 604; i++) {
+                    $('#current').append('<option value="'+i+'">'+i+'</option>');
+                }
+ 
+                init();
+            });
+            function load(param) {  
+                $('#current').val(param.page);
+                $.ajax({
+                    url: 'per-page.php',
+                    type: 'GET',
+                    data: {
+                        page: param.page,
+                        font_size: param.font_size,
+                        format:'json'
+                    },
+                })
+                .done(function(res) { 
+                    //$('#st').append('@font-face{font-family:Ayah;font-display:block;src:local(QCF2'+("000"+res.page).substr(-3,3)+'),url('+res.font_ayah+')format("woff2"),url(https://en.muqri.com/mushaf/woff/QCF2'+("000"+res.page).substr(-3,3)+'.woff) format("woff")}');
+                    $('#st').append('@font-face{font-family:Ayah;font-display:block;src:local(QCF2'+("000"+res.page).substr(-3,3)+'),url('+res.font_ayah+')format("woff2"),url(qfonts/woff/QCF2'+("000"+res.page).substr(-3,3)+'.woff) format("woff")}');
+                    var content = '';
+                    $.each(res.ayahs, function(index, val) { 
+                        if (val.surah_name) {
+                            content += '<div class="surah_name" style="font-size:'+res.font_size+'pt; margin-top:20px;"> =( '+val.surah_name+' )= </div>';
+                            content += '<div class="basmalah" style="font-size:'+(parseInt(res.font_size))+'pt">321</div>';
+                        }
+                        content += '<div class="ayah_p" style="font-size:'+res.font_size+'pt; width: auto;margin:0 auto;">'+val.words+'</div>'
+                    });
+                    $('#main').html(content);
+                    $('#main').prepend('<div style="font-size:'+res.font_size+'px;text-align:center;margin:6px 0;">= '+res.pageAr+' =</div>');
+                    rebutton();
+
+                })
+                .fail(function(err) {
+                    console.log(err.responseText);
+                });
+            }
+
+            function init() {
+                var param={};
+                if (!localStorage.getItem("page")) { 
+                    localStorage.setItem("page", 1);
+                }
+                param.page = localStorage.getItem("page") ;
+                param.font_size=24;
+                load(param);
+            }
+
+            function rebutton() {
+                var param={}
+                param.page = localStorage.getItem("page") ;
+
+                if (param.page > 0 && param.page <= 604) {
+                    $('.prev').attr('data-val',parseInt(param.page)-1);
+                    $('.next').attr('data-val',parseInt(param.page)+1);
+                    if (param.page == 604) {
+                        $('.next').attr('data-val',parseInt(param.page));
+                    }
+                }
+
+                 $("html, body").animate({ scrollTop: 0 }, "fast");
+                 return false;
+            }
+            rebutton();
+            $('button').each(function(index, el) {
+                var param={};
+                $(this).on('click', function(event) {
+                    event.preventDefault(); 
+                    param.page = $(this).attr('data-val');
+                    if (param.page > 0 && param.page <= 604) {
+                        localStorage.setItem("page", param.page);
+                        load(param); 
+                        rebutton();
+                    }
+                });
+            });
+
+            $('#current').on('change', function(event) {
+                var param={};
+                event.preventDefault();
+                param.page = $(this).val();
+                localStorage.setItem("page", param.page);
+                // $(this).find('option').removeAttr('selected');
+                // $(this).val(param.page);
+                load(param);
+                rebutton();
+            });
+            $('#current').on('focus', function(event) {
+                event.preventDefault();
+                $(this).select();
+            });
+
+        </script>
+
+
+        <!--
+    </body>
+</html>
